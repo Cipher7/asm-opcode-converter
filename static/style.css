@@ -30,6 +30,13 @@ h1 {
     margin-bottom: 0;
 }
 
+.credit {
+    font-size: 0.4em;
+    color: #94e2d5;
+    font-weight: normal;
+    vertical-align: bottom;
+}
+
 .controls {
     display: flex;
     gap: 10px;
