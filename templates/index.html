@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASM to Opcode Converter</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <h1>ASM to Opcode Converter</h1>
+        <div class="controls">
+            <input id="badchars" placeholder="Bad chars (e.g., 0x00, 0xff)">
+            <select id="arch-mode">
+                <option value="x86-32">x86 32-bit</option>
+                <option value="x86-64">x86 64-bit</option>
+                <option value="arm-32">ARM 32-bit</option>
+                <option value="arm-64">ARM 64-bit</option>
+            </select>
+        </div>
+        <div class="panels">
+            <textarea id="asm-input" placeholder="Enter ASM code..."></textarea>
+            <div id="opcode-output" class="output-panel"></div>
+        </div>
+    </div>
+    <script src="/static/script.js"></script>
+</body>
+
+</html>

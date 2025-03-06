@@ -1,0 +1,136 @@
+body {
+    font-family: 'Roboto Mono', monospace;
+    margin: 0;
+    padding: 20px;
+    background: #1e1e2f;
+    color: #d4d4d4;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #cba6f7;
+    font-size: 1.8em;
+    margin-bottom: 0;
+}
+
+.controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+#badchars, #arch-mode {
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    background: #2a2a3c;
+    color: #d4d4d4;
+    font-size: 0.9em;
+    transition: background 0.3s;
+}
+
+#badchars {
+    flex: 1;
+    min-width: 200px;
+}
+
+#arch-mode {
+    width: 150px;
+}
+
+#badchars:focus, #arch-mode:focus {
+    outline: none;
+    background: #3a3a4c;
+}
+
+.panels {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+#asm-input, .output-panel {
+    flex: 1;
+    min-width: 300px;
+    height: 500px;
+    padding: 15px;
+    border-radius: 5px;
+    background: #2a2a3c;
+    color: #d4d4d4;
+    font-size: 0.9em;
+    border: none;
+    resize: none;
+    transition: box-shadow 0.3s;
+}
+
+#asm-input:focus {
+    outline: none;
+    box-shadow: 0 0 5px #cba6f7;
+}
+
+.output-panel {
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.output-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    background: #1e1e2f;
+    border-radius: 3px;
+    transition: background 0.2s;
+}
+
+.output-line:hover {
+    background: #3a3a4c;
+}
+
+.opcodes {
+    color: #94e2d5;
+    flex: 1;
+}
+
+.asm {
+    color: #f5e0dc;
+    text-align: right;
+    flex: 1;
+}
+
+.highlight {
+    color: #f38ba8;
+}
+
+.error {
+    color: #f38ba8;
+    font-style: italic;
+}
+
+.label {
+    color: #89b4fa;
+    font-style: italic;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .panels {
+        flex-direction: column;
+    }
+    #asm-input, .output-panel {
+        height: 300px;
+    }
+}
