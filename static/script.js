@@ -48,9 +48,11 @@ function updateOpcodes() {
         .then(data => {
             if (data.error) {
                 opcodeOutput.innerHTML = `<div class="output-line"><span class="error">${data.error}</span></div>`;
+                updateBadCharCount(0);
                 return;
             }
 
+            let totalOccurrences = 0;
             let html = '';
             data.forEach(item => {
                 if (item.error) {
@@ -65,6 +67,11 @@ function updateOpcodes() {
                         <span class="label">${item.line}</span>
                     </div>`;
                 } else {
+                    // Count occurrences for this line
+                    item.opcodes.forEach(opc => {
+                        if (badchars.includes(opc)) totalOccurrences++;
+                    });
+
                     const opcodes = item.opcodes.map(opc =>
                         badchars.includes(opc) ? `<span class="highlight">${opc}</span>` : opc
                     ).join(' ');
@@ -77,8 +84,15 @@ function updateOpcodes() {
                 }
             });
             opcodeOutput.innerHTML = html;
+            updateBadCharCount(totalOccurrences);
         })
         .catch(err => console.error(err));
+}
+
+function updateBadCharCount(count) {
+    const badcharsCount = document.getElementById('badchars-count');
+    badcharsCount.textContent = count > 0 ? `${count} match${count > 1 ? 'es' : ''}` : '';
+    badcharsCount.classList.toggle('visible', count > 0);
 }
 
 // Debounce updates

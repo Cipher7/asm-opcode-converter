@@ -16,7 +16,10 @@
     <div class="container">
         <h1>ASM to Opcode Converter</h1>
         <div class="controls">
-            <input id="badchars" placeholder="Bad chars (e.g., 0x00, 0xff)">
+            <div class="badchars-wrapper">
+                <input id="badchars" placeholder="Bad chars (e.g., 0x00, 0xff)">
+                <span id="badchars-count" class="count-badge"></span>
+            </div>
             <select id="arch-mode">
                 <option value="x86-32">x86 32-bit</option>
                 <option value="x86-64">x86 64-bit</option>
