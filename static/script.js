@@ -1,10 +1,41 @@
-const asmInput = document.getElementById('asm-input');
+let editor;
+
+document.addEventListener('DOMContentLoaded', () => {
+    editor = CodeMirror(document.getElementById('editor-container'), {
+        mode: 'gas',
+        theme: 'monokai',
+        lineNumbers: true,
+        lineWrapping: false,
+        tabSize: 4,
+        indentUnit: 4,
+        scrollbarStyle: null,
+        placeholder: 'Enter ASM code...',
+        viewportMargin: Infinity,
+    });
+
+    editor.on('change', debounceUpdate);
+
+    // Add this after your CodeMirror initialization
+    const copyBtn = document.getElementById('copyBtn');
+    copyBtn.innerHTML = '<i class="fas fa-copy"></i><i class="fas fa-check"></i>';
+
+    copyBtn.addEventListener('click', async () => {
+        const code = editor.getValue();
+        await navigator.clipboard.writeText(code);
+
+        copyBtn.classList.add('copied');
+        setTimeout(() => {
+            copyBtn.classList.remove('copied');
+        }, 2000);
+    });
+});
+
 const badcharsInput = document.getElementById('badchars');
 const archModeSelect = document.getElementById('arch-mode');
 const opcodeOutput = document.getElementById('opcode-output');
 
 function updateOpcodes() {
-    const asm = asmInput.value;
+    const asm = editor.getValue();
     const archMode = archModeSelect.value;
     const badchars = badcharsInput.value.split(',').map(c => c.trim().toLowerCase()).filter(c => c);
 
@@ -57,7 +88,6 @@ function debounceUpdate() {
     timeout = setTimeout(updateOpcodes, 300);
 }
 
-asmInput.addEventListener('input', debounceUpdate);
 badcharsInput.addEventListener('input', updateOpcodes);
 archModeSelect.addEventListener('change', updateOpcodes);
 

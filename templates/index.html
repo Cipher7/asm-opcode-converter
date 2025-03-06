@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ASM to Opcode Converter</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/monokai.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="/static/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
 </head>
@@ -22,10 +25,17 @@
             </select>
         </div>
         <div class="panels">
-            <textarea id="asm-input" placeholder="Enter ASM code..."></textarea>
+            <div class="editor-wrapper">
+                <button id="copyBtn" class="copy-btn">
+                    <i class="fas fa-copy"></i>
+                </button>
+                <div id="editor-container"></div>
+            </div>
             <div id="opcode-output" class="output-panel"></div>
         </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/gas/gas.min.js"></script>
     <script src="/static/script.js"></script>
 </body>
 

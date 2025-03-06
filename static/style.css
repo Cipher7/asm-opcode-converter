@@ -56,8 +56,14 @@ h1 {
 
 .panels {
     display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
+    gap: 20px;
+    height: 500px;
+    margin-top: 20px;
+}
+
+.editor-wrapper {
+    position: relative;
+    flex: 0.8;
 }
 
 #asm-input, .output-panel {
@@ -77,11 +83,47 @@ h1 {
 #asm-input {
     flex: 2;
     min-width: 300px;
+    display: none;
+}
+
+#editor-container {
+    flex: 2;
+    min-width: 300px;
+}
+
+.CodeMirror {
+    height: 600px;
+    border-radius: 5px;
+    background: #2a2a3c !important;
+    color: #d4d4d4 !important;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.9em;
+}
+
+.CodeMirror-gutters {
+    background: #1e1e2f !important;
+    border-right: 1px solid #3a3a4c !important;
+    border-radius: 5px 0 0 5px;
+}
+
+.CodeMirror-linenumber {
+    color: #6c7086 !important;
+}
+
+.CodeMirror-focused {
+    box-shadow: 0 0 5px #cba6f7;
 }
 
 .output-panel {
-    flex: 3;
-    min-width: 400px;
+    flex: 1.2;
+    background: #272822;
+    padding: 10px;
+    font-family: 'Roboto Mono', monospace;
+    color: #f8f8f2;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 /* Custom Scrollbar - Updated */
@@ -120,13 +162,6 @@ h1 {
 #asm-input:focus {
     outline: none;
     box-shadow: 0 0 5px #cba6f7;
-}
-
-.output-panel {
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
 }
 
 .output-line {
@@ -171,6 +206,40 @@ h1 {
 .label {
     color: #89b4fa;
     font-style: italic;
+}
+
+.copy-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+    background: #3f3f3f;
+    border: none;
+    border-radius: 4px;
+    padding: 8px;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.copy-btn:hover {
+    background: #4f4f4f;
+}
+
+.copy-btn i {
+    transition: transform 0.3s;
+}
+
+.copy-btn.copied i {
+    transform: scale(1.2);
+}
+
+.copy-btn.copied .fa-copy {
+    display: none;
+}
+
+.copy-btn:not(.copied) .fa-check {
+    display: none;
 }
 
 /* Responsive adjustments */
