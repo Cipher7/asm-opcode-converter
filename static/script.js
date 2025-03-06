@@ -1,4 +1,5 @@
 let editor;
+const opcodeOutput = document.getElementById('opcode-output');
 
 document.addEventListener('DOMContentLoaded', () => {
     editor = CodeMirror(document.getElementById('editor-container'), {
@@ -15,31 +16,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
     editor.on('change', debounceUpdate);
 
-    // Add this after your CodeMirror initialization
     const copyBtn = document.getElementById('copyBtn');
-    copyBtn.innerHTML = '<i class="fas fa-copy"></i><i class="fas fa-check"></i>';
+    if (copyBtn) {
+        copyBtn.innerHTML = '<i class="fas fa-copy"></i><i class="fas fa-check"></i>';
+        copyBtn.addEventListener('click', async () => {
+            const code = editor.getValue();
+            await navigator.clipboard.writeText(code);
+            copyBtn.classList.add('copied');
+            setTimeout(() => {
+                copyBtn.classList.remove('copied');
+            }, 2000);
+        });
+    }
 
-    copyBtn.addEventListener('click', async () => {
-        const code = editor.getValue();
-        await navigator.clipboard.writeText(code);
+    // Initialize controls
+    const badcharsInput = document.getElementById('badchars');
+    const archModeSelect = document.getElementById('arch-mode');
 
-        copyBtn.classList.add('copied');
-        setTimeout(() => {
-            copyBtn.classList.remove('copied');
-        }, 2000);
-    });
+    if (badcharsInput && archModeSelect) {
+        badcharsInput.addEventListener('input', debounceUpdate);
+        archModeSelect.addEventListener('change', debounceUpdate);
+        // Initial update
+        updateOpcodes();
+    }
 });
-
-const badcharsInput = document.getElementById('badchars');
-const archModeSelect = document.getElementById('arch-mode');
-const opcodeOutput = document.getElementById('opcode-output');
 
 function updateOpcodes() {
     const asm = editor.getValue();
-    const archMode = archModeSelect.value;
-    const badchars = badcharsInput.value.split(',').map(c => c.trim().toLowerCase()).filter(c => c);
+    const archMode = document.getElementById('arch-mode').value;
+    const badchars = document.getElementById('badchars').value
+        .split(',')
+        .map(c => c.trim().toLowerCase())
+        .filter(c => c);
 
-    fetch('/convert', {
+    // Use absolute path for API endpoint
+    fetch('/api/convert', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ asm, arch_mode: archMode })
@@ -101,9 +112,3 @@ function debounceUpdate() {
     clearTimeout(timeout);
     timeout = setTimeout(updateOpcodes, 300);
 }
-
-badcharsInput.addEventListener('input', updateOpcodes);
-archModeSelect.addEventListener('change', updateOpcodes);
-
-// Initial update
-updateOpcodes();

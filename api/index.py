@@ -1,8 +1,11 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, send_from_directory, url_for
 from keystone import *
 from capstone import *
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, 
+    static_folder='../static',
+    template_folder='../templates')
 
 # Map dropdown values to Keystone/Capstone arch/mode
 ARCH_MODES = {
@@ -20,8 +23,15 @@ def strip_comments(line):
 def index():
     return render_template('index.html')
 
-@app.route('/convert', methods=['POST'])
+@app.route('/static/<path:path>')
+def serve_static(path):
+    return send_from_directory('../static', path)
+
+@app.route('/api/convert', methods=['POST'])
 def convert_asm():
+    if not request.is_json:
+        return jsonify({"error": "Expected JSON data"}), 400
+    
     data = request.get_json()
     asm_code = data.get('asm', '')
     arch_mode = data.get('arch_mode', 'x86-32')
@@ -54,6 +64,3 @@ def convert_asm():
         return jsonify(result)
     except Exception as e:
         return jsonify({"error": f"Unexpected error: {str(e)}"})
-
-if __name__ == '__main__':
-    app.run(debug=True)

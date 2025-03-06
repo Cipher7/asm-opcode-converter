@@ -1,23 +1,26 @@
 body {
-    font-family: 'Roboto Mono', monospace;
     margin: 0;
-    padding: 0;  /* Changed from 20px */
+    padding: 0;
+    width: 100%;
+    height: 100vh;
     background: #1e1e2f;
     color: #d4d4d4;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
-    min-height: 100vh;
 }
 
 .container {
-    width: 90%;
-    max-width: 1200px;
+    flex: 1;
+    padding: 20px 40px 40px 40px;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    gap: 15px;  /* Reduced from 20px */
-    padding: 15px;  /* Added padding inside container instead of body */
-    height: 100vh;  /* Make container fill viewport height */
-    box-sizing: border-box;  /* Include padding in height calculation */
+    gap: 15px;
+    background-color: #1e1e2f;
+    max-width: 1600px;
+    margin: 0 auto;
 }
 
 h1 {
@@ -60,21 +63,23 @@ h1 {
 .panels {
     display: flex;
     gap: 20px;
-    flex: 1;  /* Changed from fixed height to flex grow */
-    margin-top: 10px;  /* Reduced from 20px */
-    min-height: 0;  /* Allow panel to shrink */
+    flex: 1;
+    height: calc(100vh - 140px);
+    min-height: 0;
+    width: 100%;
+    margin-top: 10px;
 }
 
 .editor-wrapper {
     position: relative;
     flex: 0.8;
-    height: 100%;  /* Added to ensure full height */
+    height: 100%;
 }
 
 #asm-input, .output-panel {
     flex: 1;
     min-width: 400px;
-    height: auto;  /* Remove fixed height */
+    height: auto;
     padding: 15px;
     border-radius: 5px;
     background: #2a2a3c;
@@ -94,11 +99,11 @@ h1 {
 #editor-container {
     flex: 2;
     min-width: 300px;
-    height: 100%;  /* Added to ensure full height */
+    height: 100%;
 }
 
 .CodeMirror {
-    height: 100% !important;  /* Changed from 600px to be relative */
+    height: 100% !important;
     border-radius: 5px;
     background: #2a2a3c !important;
     color: #d4d4d4 !important;
@@ -122,7 +127,7 @@ h1 {
 
 .output-panel {
     flex: 1.2;
-    height: 100%;  /* Changed from 600px to be relative */
+    height: 100%;
     background: #272822;
     padding: 10px;
     font-family: 'Roboto Mono', monospace;
@@ -130,7 +135,7 @@ h1 {
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 2px;  /* Changed from 8px to 4px */
+    gap: 2px;
 }
 
 /* Custom Scrollbar - Updated */
@@ -278,12 +283,39 @@ h1 {
     opacity: 1;
 }
 
+textarea {
+    width: 100%;
+    min-height: 150px;
+    margin: 10px 0;
+    padding: 10px;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#result {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+}
+
 /* Responsive adjustments */
 @media (max-width: 600px) {
     .panels {
         flex-direction: column;
     }
     .editor-wrapper, .output-panel {
-        height: 50%;  /* Split height evenly on mobile */
+        height: 50%;
     }
 }
