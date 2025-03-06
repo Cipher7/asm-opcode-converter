@@ -1,14 +1,15 @@
 from flask import Flask, request, jsonify, render_template
 from keystone import *
+from capstone import *
 
 app = Flask(__name__)
 
-# Map dropdown values to Keystone arch/mode
+# Map dropdown values to Keystone/Capstone arch/mode
 ARCH_MODES = {
-    "x86-32": (KS_ARCH_X86, KS_MODE_32),
-    "x86-64": (KS_ARCH_X86, KS_MODE_64),
-    "arm-32": (KS_ARCH_ARM, KS_MODE_ARM),
-    "arm-64": (KS_ARCH_ARM64, KS_MODE_64)
+    "x86-32": (KS_ARCH_X86, KS_MODE_32, CS_ARCH_X86, CS_MODE_32),
+    "x86-64": (KS_ARCH_X86, KS_MODE_64, CS_ARCH_X86, CS_MODE_64),
+    "arm-32": (KS_ARCH_ARM, KS_MODE_ARM, CS_ARCH_ARM, CS_MODE_ARM),
+    "arm-64": (KS_ARCH_ARM64, KS_MODE_64, CS_ARCH_ARM64, CS_MODE_ARM)
 }
 
 def strip_comments(line):
@@ -25,45 +26,30 @@ def convert_asm():
     asm_code = data.get('asm', '')
     arch_mode = data.get('arch_mode', 'x86-32')
 
-    arch, mode = ARCH_MODES.get(arch_mode, (KS_ARCH_X86, KS_MODE_32))
-    asm_lines = asm_code.strip().split('\n')
-
+    ks_arch, ks_mode, cs_arch, cs_mode = ARCH_MODES.get(arch_mode, 
+                                        (KS_ARCH_X86, KS_MODE_32, CS_ARCH_X86, CS_MODE_32))
+    
     try:
-        ks = Ks(arch, mode)
+        # Initialize assembler and disassembler
+        ks = Ks(ks_arch, ks_mode)
+        cs = Cs(cs_arch, cs_mode)
         result = []
 
-        for line in asm_lines:
-            line = strip_comments(line)  # Remove comments
-            if not line:
-                continue
-            if line.endswith(':'):
-                result.append({"line": line, "opcodes": [], "is_label": True})
-            else:
-                try:
-                    encoding, _ = ks.asm(line)
+        # Clean input and assemble
+        clean_asm = '\n'.join(strip_comments(line) for line in asm_code.strip().split('\n') if strip_comments(line))
+        try:
+            # Assemble everything at once
+            encoding, _ = ks.asm(clean_asm, as_bytes=True)
+            if encoding:
+                # Disassemble the raw bytes and show what instructions they represent
+                for insn in cs.disasm(encoding, 0):
                     result.append({
-                        "line": line,
-                        "opcodes": [f"0x{byte:02x}" for byte in encoding]
+                        "line": f"{insn.mnemonic} {insn.op_str}",
+                        "opcodes": [f"0x{b:02x}" for b in insn.bytes]
                     })
-                except KsError as e:
-                    if e.errno == KS_ERR_ASM_SYMBOL_MISSING:
-                        result.append({
-                            "line": line,
-                            "opcodes": [],
-                            "error": "Unresolved symbol (e.g., jump/call to undefined label)"
-                        })
-                    elif e.errno == KS_ERR_ASM_MISSINGFEATURE:
-                        result.append({
-                            "line": line,
-                            "opcodes": [],
-                            "error": "Instruction not supported in this mode"
-                        })
-                    else:
-                        result.append({
-                            "line": line,
-                            "opcodes": [],
-                            "error": f"Assembly error: {str(e)}"
-                        })
+
+        except KsError as e:
+            return jsonify({"error": f"Assembly error: {str(e)}"})
 
         return jsonify(result)
     except Exception as e:
