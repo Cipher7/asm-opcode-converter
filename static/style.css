@@ -56,14 +56,14 @@ h1 {
 
 .panels {
     display: flex;
-    gap: 20px;
+    gap: 10px;
     flex-wrap: wrap;
 }
 
 #asm-input, .output-panel {
     flex: 1;
-    min-width: 300px;
-    height: 500px;
+    min-width: 400px;
+    height: 600px;
     padding: 15px;
     border-radius: 5px;
     background: #2a2a3c;
@@ -72,6 +72,49 @@ h1 {
     border: none;
     resize: none;
     transition: box-shadow 0.3s;
+}
+
+#asm-input {
+    flex: 2;
+    min-width: 300px;
+}
+
+.output-panel {
+    flex: 3;
+    min-width: 400px;
+}
+
+/* Custom Scrollbar - Updated */
+#asm-input::-webkit-scrollbar,
+.output-panel::-webkit-scrollbar {
+    width: 10px;
+    background: transparent;
+}
+
+#asm-input::-webkit-scrollbar-track,
+.output-panel::-webkit-scrollbar-track {
+    background: rgba(30, 30, 47, 0.3);
+    border-radius: 10px;
+    margin: 5px;
+}
+
+#asm-input::-webkit-scrollbar-thumb,
+.output-panel::-webkit-scrollbar-thumb {
+    background: #cba6f7;
+    border-radius: 10px;
+    border: 3px solid rgba(42, 42, 60, 0.9);
+}
+
+#asm-input::-webkit-scrollbar-thumb:hover,
+.output-panel::-webkit-scrollbar-thumb:hover {
+    background: #dbb6ff;
+}
+
+/* For Firefox */
+#asm-input,
+.output-panel {
+    scrollbar-width: thin;
+    scrollbar-color: #cba6f7 rgba(30, 30, 47, 0.3);
 }
 
 #asm-input:focus {
@@ -87,28 +130,33 @@ h1 {
 }
 
 .output-line {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: minmax(300px, auto) 1fr;
     align-items: center;
     padding: 5px;
-    background: #1e1e2f;
+    gap: 20px;
+    background: transparent;
     border-radius: 3px;
     transition: background 0.2s;
+    white-space: nowrap;
 }
 
 .output-line:hover {
-    background: #3a3a4c;
+    background: rgba(58, 58, 76, 0.5);
 }
 
 .opcodes {
     color: #94e2d5;
-    flex: 1;
+    min-width: 250px;
+    padding-right: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .asm {
     color: #f5e0dc;
-    text-align: right;
-    flex: 1;
+    text-align: left;
+    padding-left: 10px;
 }
 
 .highlight {
