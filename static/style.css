@@ -1,7 +1,7 @@
 body {
     font-family: 'Roboto Mono', monospace;
     margin: 0;
-    padding: 20px;
+    padding: 0;  /* Changed from 20px */
     background: #1e1e2f;
     color: #d4d4d4;
     display: flex;
@@ -14,7 +14,10 @@ body {
     max-width: 1200px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 15px;  /* Reduced from 20px */
+    padding: 15px;  /* Added padding inside container instead of body */
+    height: 100vh;  /* Make container fill viewport height */
+    box-sizing: border-box;  /* Include padding in height calculation */
 }
 
 h1 {
@@ -57,19 +60,21 @@ h1 {
 .panels {
     display: flex;
     gap: 20px;
-    height: 500px;
-    margin-top: 20px;
+    flex: 1;  /* Changed from fixed height to flex grow */
+    margin-top: 10px;  /* Reduced from 20px */
+    min-height: 0;  /* Allow panel to shrink */
 }
 
 .editor-wrapper {
     position: relative;
     flex: 0.8;
+    height: 100%;  /* Added to ensure full height */
 }
 
 #asm-input, .output-panel {
     flex: 1;
     min-width: 400px;
-    height: 600px;
+    height: auto;  /* Remove fixed height */
     padding: 15px;
     border-radius: 5px;
     background: #2a2a3c;
@@ -89,10 +94,11 @@ h1 {
 #editor-container {
     flex: 2;
     min-width: 300px;
+    height: 100%;  /* Added to ensure full height */
 }
 
 .CodeMirror {
-    height: 600px;
+    height: 100% !important;  /* Changed from 600px to be relative */
     border-radius: 5px;
     background: #2a2a3c !important;
     color: #d4d4d4 !important;
@@ -116,6 +122,7 @@ h1 {
 
 .output-panel {
     flex: 1.2;
+    height: 100%;  /* Changed from 600px to be relative */
     background: #272822;
     padding: 10px;
     font-family: 'Roboto Mono', monospace;
@@ -123,7 +130,7 @@ h1 {
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 2px;  /* Changed from 8px to 4px */
 }
 
 /* Custom Scrollbar - Updated */
@@ -247,7 +254,7 @@ h1 {
     .panels {
         flex-direction: column;
     }
-    #asm-input, .output-panel {
-        height: 300px;
+    .editor-wrapper, .output-panel {
+        height: 50%;  /* Split height evenly on mobile */
     }
 }
